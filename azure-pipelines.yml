@@ -1,0 +1,106 @@
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  buildConfiguration: Release
+  dockerfilePath: dockerfile
+  major: 0
+  minor: 2
+
+stages:
+  - stage: buildStage
+    displayName: Build
+    condition: always()
+    jobs:
+      - job: buildJob
+        displayName: Build job
+        steps:
+          - task: UseDotNet@2
+            displayName: .Net 5.0.x SDK
+            inputs:
+              version: 5.0.x
+              includePreviewVersions: true
+            name: useDotNet50x
+
+          - task: DotNetCoreCLI@2
+            displayName: Restore
+            inputs:
+              command: restore
+              projects: "**/*.csproj"
+              name: restore
+
+          - task: DotNetCoreCLI@2
+            displayName: Build
+            inputs:
+              command: build
+              projects: "**/*.csproj"
+              arguments: "--configuration $(buildConfiguration)"
+              name: build
+
+  - stage: testStage
+    displayName: Test
+    condition: always()
+    dependsOn: buildStage
+    jobs:
+      - job: testJob
+        displayName: Test job
+        steps:
+          - task: UseDotNet@2
+            displayName: .Net 5.0.x SDK
+            inputs:
+              version: 5.0.x
+              includePreviewVersions: true
+            name: useDotNet50x
+
+          - task: DotNetCoreCLI@2
+            displayName: Test
+            inputs:
+              command: "test"
+              arguments: "--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/"
+              publishTestResults: true
+              projects: "tests/**/*.csproj"
+              name: test
+
+          - task: PublishCodeCoverageResults@1
+            displayName: Coverage
+            inputs:
+              codeCoverageTool: Cobertura
+              summaryFileLocation: "$(Build.SourcesDirectory)/**/coverage.cobertura.xml"
+            name: coverage
+
+  - stage: masterVersionStage
+    displayName: Master Version
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    dependsOn: testStage
+    jobs:
+      - job: masterVersionJob
+        displayName: Master Version job
+        variables:
+          patch: $[counter(variables['minor'], 0)]
+        steps:
+          - bash: |
+              echo "##vso[build.updatebuildnumber]$(major).$(minor).$(patch)"
+              patchNo=$(major).$(minor).$(patch)
+              echo "##vso[task.setvariable variable=patchNo]$patchNo"
+            name: setMasterBuildName
+
+  - stage: dockerStage
+    displayName: Dockerize
+    condition: eq(variables['Build.SourceBranch'], 'refs/heads/master')
+    dependsOn: masterVersionStage
+    jobs:
+      - job:
+        displayName: Dockerize job
+        steps:
+          - task: Docker@2
+            displayName: Dockerize and Push
+            inputs:
+              containerRegistry: docker-hub
+              repository: rhipster/discord-backend
+              Dockerfile: $(dockerfilePath)
+              command: buildAndPush
+              tags: $(Build.BuildNumber)
+              name: dockerize
