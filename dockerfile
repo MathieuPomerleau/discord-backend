@@ -19,7 +19,7 @@ FROM build AS publish
 RUN dotnet publish -c release --no-build -o /app
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/core/runtime:5.0
+FROM mcr.microsoft.com/dotnet/core/aspnet:5.0
 WORKDIR /app
 COPY --from=publish /app .
 ENTRYPOINT ["dotnet", "Injhinuity.Backend.dll"]
