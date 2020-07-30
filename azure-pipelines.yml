@@ -8,7 +8,7 @@ variables:
   buildConfiguration: Release
   dockerfilePath: dockerfile
   major: 0
-  minor: 2
+  minor: 3
 
 stages:
   - stage: buildStage
@@ -58,7 +58,7 @@ stages:
           - task: DotNetCoreCLI@2
             displayName: Test
             inputs:
-              command: "test"
+              command: test
               arguments: "--configuration $(buildConfiguration) /p:CollectCoverage=true /p:CoverletOutputFormat=cobertura /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/"
               publishTestResults: true
               projects: "tests/**/*.csproj"

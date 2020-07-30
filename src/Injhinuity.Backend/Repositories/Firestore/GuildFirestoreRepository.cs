@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Google.Cloud.Firestore;
 using Injhinuity.Backend.Firestore;
 using Injhinuity.Backend.Model.Entities;
@@ -29,8 +31,14 @@ namespace Injhinuity.Backend.Repositories.Firestore
 
         public async Task<GuildEntity?> GetByItemIdAsync(string itemId)
         {
-            var snapshot = await Snapshot(itemId);
+            var snapshot = await SnapshotAsync(itemId);
             return snapshot.ConvertTo<GuildEntity>();
+        }
+
+        public async Task<IEnumerable<GuildEntity>?> GetAllAsync()
+        {
+            var snapshot = await CollectionSnapshotAsync();
+            return snapshot.Documents.Select(x => x.ConvertTo<GuildEntity>());
         }
 
         public async Task UpdateAsync(string itemId, GuildEntity entity)
@@ -42,7 +50,10 @@ namespace Injhinuity.Backend.Repositories.Firestore
         private DocumentReference Reference(string itemId) =>
             _firestoreProvider.GetGuildReference(itemId);
 
-        private Task<DocumentSnapshot> Snapshot(string itemId) =>
-            _firestoreProvider.GetGuildSnapshot(itemId);
+        private Task<DocumentSnapshot> SnapshotAsync(string itemId) =>
+            _firestoreProvider.GetGuildSnapshotAsync(itemId);
+
+        private Task<QuerySnapshot> CollectionSnapshotAsync() =>
+            _firestoreProvider.GetGuildCollectionSnapshotAsync();
     }
 }

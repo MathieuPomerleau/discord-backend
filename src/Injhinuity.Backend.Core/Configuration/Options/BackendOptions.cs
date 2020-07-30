@@ -11,13 +11,28 @@
 
     public class BackendOptions : IBackendOptions
     {
+        private const string OptionName = "Backend";
+
         public VersionOptions? Version { get; set; }
         public LoggingOptions? Logging { get; set; }
         public FirestoreOptions? Firestore { get; set; }
 
-        public bool ContainsNull() =>
-            (Version?.ContainsNull() ?? true) ||
-            (Logging?.ContainsNull() ?? true) ||
-            (Firestore?.ContainsNull() ?? true);
+        public void ContainsNull(NullableOptionsResult result)
+        {
+            if (Version is null)
+                result.AddValueToResult(OptionName, "Version");
+            else
+                Version.ContainsNull(result);
+
+            if (Logging is null)
+                result.AddValueToResult(OptionName, "Logging");
+            else
+                Logging.ContainsNull(result);
+
+            if (Firestore is null)
+                result.AddValueToResult(OptionName, "Firestore");
+            else
+                Firestore.ContainsNull(result);
+        }
     }
 }

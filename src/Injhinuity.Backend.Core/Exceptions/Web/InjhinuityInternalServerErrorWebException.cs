@@ -5,11 +5,11 @@ namespace Injhinuity.Backend.Core.Exceptions.Web
 {
     public class InjhinuityInternalServerErrorWebException : InjhinuityWebException
     {
-        public InjhinuityInternalServerErrorWebException(string message) : base(HttpStatusCode.InternalServerError, message)
+        public InjhinuityInternalServerErrorWebException(string message, string reason) : base(HttpStatusCode.NotFound, message, reason)
         {
         }
 
-        public InjhinuityInternalServerErrorWebException(string message, Exception innerException) : base(HttpStatusCode.InternalServerError, message, innerException)
+        public InjhinuityInternalServerErrorWebException(string message, string reason, Exception innerException) : base(HttpStatusCode.NotFound, message, reason, innerException)
         {
         }
     }

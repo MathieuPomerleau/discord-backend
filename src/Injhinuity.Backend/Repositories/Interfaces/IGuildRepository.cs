@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Injhinuity.Backend.Model.Entities;
 
 namespace Injhinuity.Backend.Repositories.Interfaces
@@ -8,6 +9,7 @@ namespace Injhinuity.Backend.Repositories.Interfaces
         Task CreateAsync(string itemId, GuildEntity entity);
         Task DeleteAsync(string itemId);
         Task<GuildEntity?> GetByItemIdAsync(string itemId);
+        Task<IEnumerable<GuildEntity>?> GetAllAsync();
         Task UpdateAsync(string itemId, GuildEntity entity);
     }
 }

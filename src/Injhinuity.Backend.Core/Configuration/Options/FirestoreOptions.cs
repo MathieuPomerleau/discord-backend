@@ -2,11 +2,18 @@
 {
     public class FirestoreOptions : INullableOption
     {
+        private const string OptionName = "Firestore";
+
         public string? ProjectId { get; set; }
         public bool? IsEmulated { get; set; }
 
-        public bool ContainsNull() =>
-            ProjectId is null ||
-            IsEmulated is null;
+        public void ContainsNull(NullableOptionsResult result)
+        {
+            if (ProjectId is null)
+                result.AddValueToResult(OptionName, "ProjectId");
+
+            if (IsEmulated is null)
+                result.AddValueToResult(OptionName, "IsEmulated");
+        }
     }
 }

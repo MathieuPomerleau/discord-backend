@@ -1,6 +1,7 @@
 using Injhinuity.Backend.Core.Configuration;
 using Injhinuity.Backend.Core.Configuration.Options;
 using Injhinuity.Backend.Extensions;
+using Injhinuity.Backend.Middlewares;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,6 +38,7 @@ namespace Injhinuity.Backend
 
         public void Configure(IApplicationBuilder app)
         {
+            app.UseMiddleware<InjhinuityExceptionMiddleware>();
             app.UseMvc();
         }
     }

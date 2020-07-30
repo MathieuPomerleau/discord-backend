@@ -7,13 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injhinuity.Backend", "Injhi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injhinuity.Backend.Core", "Injhinuity.Backend.Core\Injhinuity.Backend.Core.csproj", "{0FB3A943-2090-4CB7-84DE-4068F78978D4}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D433A567-DE07-47A5-BDBA-5A2E8A0E9BCA}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Injhinuity.Backend.Model", "Injhinuity.Backend.Model\Injhinuity.Backend.Model.csproj", "{F5FD8186-FF72-491C-B406-158D5A2AE1CA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Injhinuity.Backend.Tests", "..\test\Injhinuity.Backend.Tests\Injhinuity.Backend.Tests.csproj", "{A17D1288-0F21-48B0-B12F-AA0C20275BCF}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D433A567-DE07-47A5-BDBA-5A2E8A0E9BCA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Injhinuity.Backend.Core.Tests", "..\test\Injhinuity.Backend.Core.Tests\Injhinuity.Backend.Core.Tests.csproj", "{187340BD-9AEF-40F9-B11C-700A9CF10A8E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Injhinuity.Backend.Tests", "..\tests\Injhinuity.Backend.Tests\Injhinuity.Backend.Tests.csproj", "{A17D1288-0F21-48B0-B12F-AA0C20275BCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Injhinuity.Backend.Core.Tests", "..\tests\Injhinuity.Backend.Core.Tests\Injhinuity.Backend.Core.Tests.csproj", "{187340BD-9AEF-40F9-B11C-700A9CF10A8E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

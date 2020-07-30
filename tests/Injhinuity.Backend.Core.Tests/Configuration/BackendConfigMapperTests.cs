@@ -1,5 +1,6 @@
 ﻿using System;
 using FluentAssertions;
+using FluentAssertions.Execution;
 using Injhinuity.Backend.Core.Configuration;
 using Injhinuity.Backend.Core.Configuration.Options;
 using Injhinuity.Backend.Core.Exceptions;
@@ -18,20 +19,11 @@ namespace Injhinuity.Backend.Core.Tests.Configuration
         }
 
         [Fact]
-        public void MapFromNullableOptions_WhenCalledWithValidOptions_ThenMapsToAConfigObject()
+        public void MapFromNullableOptions_WhenCalledWithNullClientOptions_ThenThrowAnInjhinuityException()
         {
-            var options = CreateValidOptions();
+            Action action = () => _subject.MapFromNullableOptions(null);
 
-            var result = _subject.MapFromNullableOptions(options);
-
-            result.Should().BeOfType<BackendConfig>();
-            result.Firestore.Should().NotBeNull();
-            result.Firestore.ProjectId.Should().NotBeNull();
-            result.Firestore.IsEmulated.Should().BeTrue();
-            result.Version.Should().NotBeNull();
-            result.Version.VersionNo.Should().NotBeNull();
-            result.Logging.Should().NotBeNull();
-            result.Logging.LogLevel.Should().NotBeNull();
+            action.Should().Throw<InjhinuityException>().WithMessage("Configuration couldn't be built, options are null");
         }
 
         [Fact]
@@ -44,7 +36,26 @@ namespace Injhinuity.Backend.Core.Tests.Configuration
 
             Action action = () => _subject.MapFromNullableOptions(options);
 
-            action.Should().Throw<InjhinuityException>().WithMessage("Config validation failed, missing value found");
+            action.Should().Throw<InjhinuityException>().WithMessage("The following values are missing from the configuration:\nBackend - Version\nBackend - Logging\nBackend - Firestore");
+        }
+
+        [Fact]
+        public void MapFromNullableOptions_WhenCalledWithValidOptions_ThenMapsToAConfigObject()
+        {
+            var options = CreateValidOptions();
+
+            var result = _subject.MapFromNullableOptions(options);
+
+            using var scope = new AssertionScope();
+
+            result.Should().BeOfType<BackendConfig>();
+            result.Firestore.Should().NotBeNull();
+            result.Firestore.ProjectId.Should().NotBeNull();
+            result.Firestore.IsEmulated.Should().BeTrue();
+            result.Version.Should().NotBeNull();
+            result.Version.VersionNo.Should().NotBeNull();
+            result.Logging.Should().NotBeNull();
+            result.Logging.LogLevel.Should().NotBeNull();
         }
 
         private IBackendOptions CreateValidOptions() =>

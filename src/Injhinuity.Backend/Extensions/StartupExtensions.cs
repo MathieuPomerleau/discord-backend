@@ -36,6 +36,7 @@ namespace Injhinuity.Backend.Extensions
             services
                 .AddTransient<IFirestoreProvider, FirestoreProvider>()
                 .AddTransient<IGuildService, GuildService>()
-                .AddTransient<ICommandService, CommandService>();
+                .AddTransient<ICommandService, CommandService>()
+                .AddTransient<IInjhinuityMapper, InjhinuityMapper>();
     }
 }
