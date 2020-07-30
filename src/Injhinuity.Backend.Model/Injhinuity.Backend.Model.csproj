@@ -7,7 +7,6 @@
 
   <ItemGroup>
     <PackageReference Include="Google.Cloud.Firestore" Version="2.1.0" />
-    <PackageReference Include="Mapster" Version="5.3.2" />
   </ItemGroup>
 
 </Project>
