@@ -30,13 +30,15 @@ namespace Injhinuity.Backend.Extensions
         public static IServiceCollection AddRepositories(this IServiceCollection services) =>
             services
                 .AddTransient<IGuildRepository, GuildFirestoreRepository>()
-                .AddTransient<ICommandRepository, CommandFirestoreRepository>();
+                .AddTransient<ICommandRepository, CommandFirestoreRepository>()
+                .AddTransient<IRoleRepository, RoleFirestoreRepository>();
 
         public static IServiceCollection AddServices(this IServiceCollection services) =>
             services
                 .AddTransient<IFirestoreProvider, FirestoreProvider>()
                 .AddTransient<IGuildService, GuildService>()
                 .AddTransient<ICommandService, CommandService>()
+                .AddTransient<IRoleService, RoleService>()
                 .AddTransient<IInjhinuityMapper, InjhinuityMapper>();
     }
 }

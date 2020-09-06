@@ -8,13 +8,13 @@ using Injhinuity.Backend.Repositories.Interfaces;
 
 namespace Injhinuity.Backend.Repositories.Firestore
 {
-    public class CommandFirestoreRepository : BaseCollectionFirestoreRepository, ICommandRepository
+    public class RoleFirestoreRepository : BaseCollectionFirestoreRepository, IRoleRepository
     {
-        public CommandFirestoreRepository(IFirestoreProvider firestoreProvider) : base(firestoreProvider, FirestoreCollections.Commands)
-        { 
+        public RoleFirestoreRepository(IFirestoreProvider firestoreProvider) : base(firestoreProvider, FirestoreCollections.Roles)
+        {
         }
 
-        public async Task CreateAsync(string guildId, string itemId, CommandEntity entity)
+        public async Task CreateAsync(string guildId, string itemId, RoleEntity entity)
         {
             var reference = ItemReference(guildId, itemId);
             await reference.CreateAsync(entity);
@@ -26,19 +26,19 @@ namespace Injhinuity.Backend.Repositories.Firestore
             await reference.DeleteAsync();
         }
 
-        public async Task<CommandEntity?> GetByItemIdAsync(string guildId, string itemId)
+        public async Task<RoleEntity?> GetByItemIdAsync(string guildId, string itemId)
         {
             var snapshot = await ItemSnapshotAsync(guildId, itemId);
-            return snapshot.ConvertTo<CommandEntity>();
+            return snapshot.ConvertTo<RoleEntity>();
         }
 
-        public async Task<IEnumerable<CommandEntity>?> GetAllAsync(string guildId)
+        public async Task<IEnumerable<RoleEntity>?> GetAllAsync(string guildId)
         {
             var snapshot = await CollectionSnapshotAsync(guildId);
-            return snapshot.Documents.Select(x => x.ConvertTo<CommandEntity>());
+            return snapshot.Documents.Select(x => x.ConvertTo<RoleEntity>());
         }
 
-        public async Task UpdateAsync(string guildId, string itemId, CommandEntity entity)
+        public async Task UpdateAsync(string guildId, string itemId, RoleEntity entity)
         {
             var reference = ItemReference(guildId, itemId);
             await reference.SetAsync(entity, SetOptions.MergeAll);

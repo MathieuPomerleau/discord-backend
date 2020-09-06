@@ -8,13 +8,10 @@ using Injhinuity.Backend.Repositories.Interfaces;
 
 namespace Injhinuity.Backend.Repositories.Firestore
 {
-    public class GuildFirestoreRepository : IGuildRepository
+    public class GuildFirestoreRepository : BaseFirestoreRepository, IGuildRepository
     {
-        private readonly IFirestoreProvider _firestoreProvider;
-
-        public GuildFirestoreRepository(IFirestoreProvider firestoreProvider)
+        public GuildFirestoreRepository(IFirestoreProvider firestoreProvider) : base(firestoreProvider)
         {
-            _firestoreProvider = firestoreProvider;
         }
 
         public async Task CreateAsync(string itemId, GuildEntity entity)
@@ -46,14 +43,5 @@ namespace Injhinuity.Backend.Repositories.Firestore
             var reference = Reference(itemId);
             await reference.SetAsync(entity, SetOptions.MergeAll);
         }
-
-        private DocumentReference Reference(string itemId) =>
-            _firestoreProvider.GetGuildReference(itemId);
-
-        private Task<DocumentSnapshot> SnapshotAsync(string itemId) =>
-            _firestoreProvider.GetGuildSnapshotAsync(itemId);
-
-        private Task<QuerySnapshot> CollectionSnapshotAsync() =>
-            _firestoreProvider.GetGuildCollectionSnapshotAsync();
     }
 }

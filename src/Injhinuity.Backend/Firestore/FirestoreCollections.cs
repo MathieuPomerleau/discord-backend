@@ -4,5 +4,6 @@
     {
         public static string Guilds => "guilds";
         public static string Commands => "commands";
+        public static string Roles => "roles";
     }
 }

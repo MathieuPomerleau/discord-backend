@@ -15,50 +15,50 @@ using Xunit;
 
 namespace Injhinuity.Backend.Tests.Controllers
 {
-    public class CommandControllerTests
+    public class RoleControllerTests
     {
         private static readonly IFixture _fixture = new Fixture();
-        private readonly CommandController _subject;
+        private readonly RoleController _subject;
 
-        private readonly ICommandService _service;
+        private readonly IRoleService _service;
         private readonly IInjhinuityMapper _mapper;
 
         private readonly string _guildId = _fixture.Create<string>();
         private readonly string _itemId = _fixture.Create<string>();
-        private readonly Command _command = _fixture.Create<Command>();
-        private readonly IEnumerable<Command> _commands = _fixture.CreateMany<Command>();
-        private readonly CommandRequest _commandRequest = _fixture.Create<CommandRequest>();
-        private readonly CommandResponse _commandResponse = _fixture.Create<CommandResponse>();
-        private readonly IEnumerable<CommandResponse> _commandResponses = _fixture.CreateMany<CommandResponse>();
+        private readonly Role _role = _fixture.Create<Role>();
+        private readonly IEnumerable<Role> _roles = _fixture.CreateMany<Role>();
+        private readonly RoleRequest _roleRequest = _fixture.Create<RoleRequest>();
+        private readonly RoleResponse _roleResponse = _fixture.Create<RoleResponse>();
+        private readonly IEnumerable<RoleResponse> _roleResponses = _fixture.CreateMany<RoleResponse>();
 
-        public CommandControllerTests()
+        public RoleControllerTests()
         {
-            _service = Substitute.For<ICommandService>();
+            _service = Substitute.For<IRoleService>();
             _mapper = Substitute.For<IInjhinuityMapper>();
-            _mapper.Map<CommandRequest, Command>(default).ReturnsForAnyArgs(_command);
-            _mapper.Map<Command, CommandResponse>(default).ReturnsForAnyArgs(_commandResponse);
-            _mapper.MapEnumerable<CommandRequest, Command>(default).ReturnsForAnyArgs(_commands);
-            _mapper.MapEnumerable<Command, CommandResponse>(default).ReturnsForAnyArgs(_commandResponses);
+            _mapper.Map<RoleRequest, Role>(default).ReturnsForAnyArgs(_role);
+            _mapper.Map<Role, RoleResponse>(default).ReturnsForAnyArgs(_roleResponse);
+            _mapper.MapEnumerable<RoleRequest, Role>(default).ReturnsForAnyArgs(_roles);
+            _mapper.MapEnumerable<Role, RoleResponse>(default).ReturnsForAnyArgs(_roleResponses);
 
-            _subject = new CommandController(_service, _mapper);
+            _subject = new RoleController(_service, _mapper);
         }
 
         [Fact]
         public void CreateAsync_WhenCalledWithNullRequest_ThenThrowsException()
         {
-            _mapper.Map<CommandRequest, Command>(default).ReturnsForAnyArgs((Command)null);
+            _mapper.Map<RoleRequest, Role>(default).ReturnsForAnyArgs((Role)null);
 
             Func<Task> act = async () => await _subject.CreateAsync(_guildId, null);
 
-            act.Should().Throw<InjhinuityBadRequestWebException>().WithMessage("Command request was empty or invalid");
+            act.Should().Throw<InjhinuityBadRequestWebException>().WithMessage("Role request was empty or invalid");
         }
 
         [Fact]
         public async Task CreateAsync_WhenCalledWithCorrectRequest_ThenCallsItsService()
         {
-            await _subject.CreateAsync(_guildId, _commandRequest);
+            await _subject.CreateAsync(_guildId, _roleRequest);
 
-            await _service.Received().CreateAsync(_guildId, Arg.Any<Command>());
+            await _service.Received().CreateAsync(_guildId, Arg.Any<Role>());
         }
 
         [Fact]
@@ -70,9 +70,9 @@ namespace Injhinuity.Backend.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetAsync_WhenCalled_ThenReturnsACommand()
+        public async Task GetAsync_WhenCalled_ThenReturnsARole()
         {
-            _service.GetByItemIdAsync(default, default).ReturnsForAnyArgs(_command);
+            _service.GetByItemIdAsync(default, default).ReturnsForAnyArgs(_role);
 
             var result = await _subject.GetAsync(_guildId, _itemId) as OkObjectResult;
 
@@ -81,9 +81,9 @@ namespace Injhinuity.Backend.Tests.Controllers
         }
 
         [Fact]
-        public async Task GetAllAsync_WhenCalled_ThenReturnsAListOfCommands()
+        public async Task GetAllAsync_WhenCalled_ThenReturnsAListOfRoles()
         {
-            _service.GetAllAsync(default).ReturnsForAnyArgs(_commands);
+            _service.GetAllAsync(default).ReturnsForAnyArgs(_roles);
 
             var result = await _subject.GetAllAsync(_guildId) as OkObjectResult;
 
@@ -94,19 +94,19 @@ namespace Injhinuity.Backend.Tests.Controllers
         [Fact]
         public void UpdateAsync_WhenCalledWithNullRequest_ThenThrowsException()
         {
-            _mapper.Map<CommandRequest, Command>(default).ReturnsForAnyArgs((Command)null);
+            _mapper.Map<RoleRequest, Role>(default).ReturnsForAnyArgs((Role)null);
 
             Func<Task> act = async () => await _subject.UpdateAsync(_guildId, null);
 
-            act.Should().Throw<InjhinuityBadRequestWebException>().WithMessage("Command request was empty or invalid");
+            act.Should().Throw<InjhinuityBadRequestWebException>().WithMessage("Role request was empty or invalid");
         }
 
         [Fact]
         public async Task UpdateAsync_WhenCalledWithCorrectRequest_ThenCallsItsService()
         {
-            await _subject.UpdateAsync(_guildId, _commandRequest);
+            await _subject.UpdateAsync(_guildId, _roleRequest);
 
-            await _service.Received().UpdateAsync(_guildId, _command.Name, Arg.Any<Command>());
+            await _service.Received().UpdateAsync(_guildId, _role.Name, Arg.Any<Role>());
         }
     }
 }
