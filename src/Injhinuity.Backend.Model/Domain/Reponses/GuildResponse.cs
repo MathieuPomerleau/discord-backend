@@ -1,9 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Injhinuity.Backend.Model.Domain.Reponses
+﻿namespace Injhinuity.Backend.Model.Domain.Reponses
 {
-    public class GuildResponse
-    {
-        public string Id { get; set; }
-    }
+    public record GuildResponse(string Id, RoleGuildSettingsResponse RoleSettings);
 }

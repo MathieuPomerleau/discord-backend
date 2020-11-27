@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Firestore;
+﻿#nullable disable
+using Google.Cloud.Firestore;
 
 namespace Injhinuity.Backend.Model.Entities
 {
@@ -7,5 +8,7 @@ namespace Injhinuity.Backend.Model.Entities
     {
         [FirestoreProperty]
         public string Id { get; set; }
+        [FirestoreProperty]
+        public RoleGuildSettingsEntity RoleSettings { get; set; }
     }
 }

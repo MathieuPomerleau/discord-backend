@@ -1,8 +1,4 @@
 ﻿namespace Injhinuity.Backend.Model.Domain
 {
-    public class Role
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
+    public record Role(string Id, string Name, string EmoteString);
 }

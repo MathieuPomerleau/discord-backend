@@ -1,4 +1,5 @@
-﻿using Google.Cloud.Firestore;
+﻿#nullable disable
+using Google.Cloud.Firestore;
 
 namespace Injhinuity.Backend.Model.Entities
 {

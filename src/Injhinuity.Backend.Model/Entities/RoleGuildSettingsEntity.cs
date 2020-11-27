@@ -4,13 +4,13 @@ using Google.Cloud.Firestore;
 namespace Injhinuity.Backend.Model.Entities
 {
     [FirestoreData]
-    public class RoleEntity
+    public class RoleGuildSettingsEntity
     {
         [FirestoreProperty]
-        public string Id { get; set; }
+        public string ReactionRoleChannelId { get; set; }
         [FirestoreProperty]
-        public string Name { get; set; }
+        public string ReactionRoleMessageId { get; set; }
         [FirestoreProperty]
-        public string EmoteString { get; set; }
+        public string MuteRoleId { get; set; }
     }
 }
